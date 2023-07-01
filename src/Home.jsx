@@ -1,44 +1,27 @@
 import {
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Box,
-    Typography,
-    Grid,
-    TextField,
-    FormControl,
-    Button,
-    IconButton,
-    Modal,
-    Fade,
     Backdrop,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    Paper,
-    TableBody,
+    Box,
+    Button,
     Chip,
-    Stack,
+    Fade,
+    FormControl,
     FormLabel,
+    IconButton,
     Input,
-    Select,
     MenuItem,
+    Modal,
+    Paper,
+    Select,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { fetchChallenges, fetchItems } from "./services/apiServices";
-// import DialogBox from "../../../components/DialogBox";
-// import Spinner from "../../../components/Spinner";
-// import { API } from "../../../constants/apiUrl";
-// import { fetchWrapper } from "../../../helpers";
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-// import dynamic from "next/dynamic";
-// import AlertDialog from "../../../components/AlertDialog";
-// const RPlayer = dynamic(() => import('../../../components/WrappedPlayer'), { ssr: false })
+import { addNewItem, changeItemStatusbyid, deleteItembyid, fetchChallenges, fetchItems, updateItembyid } from "./services/apiServices";
 
 const style = {
     position: 'absolute',
@@ -95,23 +78,10 @@ const deletebtn = [
 
 
 export default function Home() {
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [courses, setCourses] = useState([]);
-    // const [sections, setSections] = useState<any>([]);
-    // const [actSectTab, setActSectTab] = React.useState<number | undefined | null>(0);
-    // const [actCoursTab, setActCoursTab] = React.useState<number | undefined | null>(0);
-    // const [sectionID, setSectionID] = React.useState<number | undefined | null>();
-    // const [courseID, setCourseID] = React.useState<any>();
-    // const [yvidolink, setYvidolink] = useState<any>();
-    // const [codelink, setCodelink] = useState<any>();
-    // const [notes, setNotes] = useState<any>();
-    // const [chaptDetail, setChaptDetail] = useState<any>("");
+
     const [open, setOpen] = useState(false);
-    // const [modalContent, setModalContent] = React.useState('');
-    // const [openCourseAlertModal, setOpenCourseAlertModal] = React.useState(false);
-    // const [openSectionAlertModal, setOpenSectionAlertModal] = React.useState(false);
+
     const [isEditingItem, setIsEditingItem] = useState(false);
-    const [itemInputFieldsInfo, setItemInputFieldsInfo] = useState({});
     const [fetchedItemsInfo, setFetchedItemsInfo] = useState([]);
     const [fetchedChallengeListInfo, setFetchedChallengeListInfo] = useState([]);
     const [editingItem, setEditingItem] = useState({});
@@ -145,305 +115,92 @@ export default function Home() {
     }, [])
 
 
-    // const [openCourDial, setOpenCourDial] = React.useState(false);
-    // const [openSecDial, setOpenSecDial] = React.useState(false);
-    // const [nameInput, setNameInput] = React.useState('');
-    // const [descInput, setDescInput] = React.useState('');
-
-    // const handleClickOpen = () => {
-    //     setOpenCourDial(true);
-    // };
-    // const handleClickOpenAddSec = () => {
-    //     setOpenSecDial(true);
-    // };
-
-    // const handlePlayContent = (value: any) => {
-    //     switch (value) {
-    //         case 'video':
-    //             setModalContent(value);
-    //             setOpen(true)
-    //             break;
-    //         case 'code':
-    //             setModalContent(value);
-    //             setOpen(true)
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    // const fetchCourses = () => {
-    //     fetchWrapper.get(`${API.portalURL}${API.getAllCourses}`).then(res => {
-    //         if (res.length > 0) {
-    //             if (!courseID || res.length == 1 && actSectTab != undefined) {
-    //                 setCourseID(res?.slice().sort((a: any, b: any) => Number(a.slNo) - Number(b.slNo))[0].id)
-    //             }
-    //             setCourses(res?.slice().sort((a: any, b: any) => Number(a.slNo) - Number(b.slNo)))
-    //         } else {
-    //             setCourses([])
-    //         }
-    //         setIsLoading(false)
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
-
-    // useEffect(() => {
-    //     fetchCourses()
-
-    // }, [openCourDial]);
-
-    // const handleCourseItemSwitch = (index: any, cID: any) => {
-
-    //     if (index == actCoursTab) {
-    //         return
-    //     } else {
-
-    //         setActCoursTab(index),
-    //             setCourseID(cID),
-    //             setChaptDetail(''),
-    //             setSectionID(null),
-    //             setSections([]),
-    //             setActSectTab(null),
-    //             setYvidolink(null)
-    //         setCodelink(null)
-    //         setNotes(null)
-    //     }
-
-    // };
-
-    // const handleCoursesItemAdd = () => {
-
-    //     fetchWrapper.post(`${API.portalURL}${API.createCourses}`,
-    //         {
-    //             "slNo": courses.length + 1,
-    //             "title": nameInput,
-    //             "description": descInput
-    //         }
-    //     ).then(res => {
-    //         setNameInput('')
-    //         setDescInput('')
-    //         setOpenCourDial(false)
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //     });
-    // };
-
-    // const handleCoursesItemDelete = () => { 
-    //     if (!openCourseAlertModal) {
-    //         setOpenCourseAlertModal(true)
-    //         return
-    //     }
-
-    //     setIsLoading(true)
-
-    //     fetchWrapper.post(`${API.portalURL}${API.coursesDelete}`,
-    //         {
-    //             "id": courseID
-    //         }
-    //     ).then(res => {
-
-    //         fetchCourses()
-
-    //         setSections([])
-    //         setIsLoading(false),
-    //             setOpenCourseAlertModal(false),
-    //             setActSectTab(null)
-    //         setActCoursTab(null)
-
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
+    const handleClose = () => {
+        setOpen(false)
+        setIsEditingItem(false)
+        setEditingItem({})
+    };
 
 
-    // const fetchSectionsItems = (courseID: any) => {
-    //     setIsLoading(true)
-    //     fetchWrapper.get(`${API.portalURL}${API.getSection(courseID)}`).then(res => {
-    //         if (res.length > 0) {
-    //             if (!sectionID && actSectTab != null) {
-    //                 setSectionID(res?.slice().sort((a: any, b: any) => Number(a.slNo) - Number(b.slNo))[0].id)
-    //             }
-    //             setSections(res?.slice().sort((a: any, b: any) => Number(a.slNo) - Number(b.slNo)))
-    //         } else {
-    //             setSections([])
-    //         }
-    //         setIsLoading(false)
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
-
-
-    // useEffect(() => {
-    //     if (openSecDial == false) {
-
-    //         fetchSectionsItems(courseID)
-    //     }
-    // }, [courseID, openSecDial]);
-
-    // const handleSectionsItemSwitch = (index: any, sID: any) => {
-    //     if (index == actSectTab) {
-    //         return
-    //     } else {
-    //         setActSectTab(index),
-    //             setSectionID(sID)
-    //         setYvidolink('')
-    //         setCodelink('')
-    //         setNotes('')
-
-    //     }
-    // };
-
-
-    // const handleSectionsItemAdd = () => {
-    //     fetchWrapper.post(`${API.portalURL}${API.createSecton(courseID)}`,
-    //         {
-    //             "slNo": sections.length + 1,
-    //             "name": nameInput,
-    //             "description": descInput
-    //         }
-    //     ).then(res => {
-    //         setNameInput('')
-    //         setDescInput('')
-    //         setOpenSecDial(false)
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //     });
-    // };
-
-    // const handleSectionItemDelete = () => {
-    //     if (!openSectionAlertModal) {
-    //         setOpenSectionAlertModal(true)
-    //         return
-    //     }
-    //     setIsLoading(true)
-
-    //     fetchWrapper.post(`${API.portalURL}${API.deleteSectionItem}`,
-    //         {
-    //             "cId": courseID,
-    //             "sId": sectionID,
-    //         }
-    //     ).then(res => {
-    //         setIsLoading(false)
-
-    //         fetchSectionsItems(courseID)
-    //         setChaptDetail("")
-    //         setOpenSectionAlertModal(false),
-
-    //         setSectionID(null)
-    //         setActSectTab(null)
-
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
-
-    // const getSectionItemDetails = () => {
-    //     fetchWrapper.get(`${API.portalURL}${API.getsectionDetails(courseID, sectionID)}`).then(res => {
-    //         if (res.length > 0) {
-    //             setChaptDetail(res[0])
-    //             setYvidolink(res[0].videoLink)
-    //             setCodelink(res[0].codeLink)
-    //             setNotes(res[0].textContent)
-    //         } else {
-    //             setChaptDetail("")
-    //         }
-    //         setIsLoading(false)
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // }
-
-
-    // useEffect(() => {
-    //     { actSectTab != null && setIsLoading(true) }
-
-    //     {
-    //         actSectTab != null && getSectionItemDetails()
-    //     }
-    // }, [sectionID]);
-
-
-    // const handleContentDetailsSave = () => {
-    //     setIsLoading(true)
-    //     fetchWrapper.post(`${API.portalURL}${API.updateCourseDetails(courseID, sectionID, chaptDetail.id)}`,
-    //         {
-    //             "videoLink": yvidolink,
-    //             "codeLink": codelink,
-    //             "textContent": notes,
-    //         }
-    //     ).then(res => {
-    //         setIsLoading(false)
-    //         setYvidolink(null)
-    //         setCodelink(null)
-    //         setNotes(null)
-    //         getSectionItemDetails()
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
-
-    // const handleContentDetailsAdd = () => {
-    //     setIsLoading(true)
-
-    //     fetchWrapper.post(`${API.portalURL}${API.createDetails(courseID, sectionID)}`,
-    //         {
-    //             "videoLink": yvidolink,
-    //             "codeLink": codelink,
-    //             "textContent": notes,
-    //         }
-    //     ).then(res => {
-    //         setIsLoading(false)
-    //         setYvidolink(null)
-    //         setCodelink(null)
-    //         setNotes(null)
-    //         getSectionItemDetails()
-    //     }).catch(error => {
-    //         console.log(error, 'error--')
-    //         setIsLoading(false)
-    //     });
-    // };
     const onEditItem = (record) => {
         setOpen(true)
         setIsEditingItem(true);
         setEditingItem({ ...record });
-      };
+    };
 
-    const createNewItem = () => {
-        // const dataSet = {
-        //     name: productInputFieldsInfo.name,
-        //     description: productInputFieldsInfo.description,
-        //     attributes: productInputFieldsInfo.attributes,
-        //     price: productInputFieldsInfo.price,
-        //     salePrice: productInputFieldsInfo.salePrice,
-        //     stock: productInputFieldsInfo.stock,
-        //     image: productInputFieldsInfo.image
-        // };
 
-        // Promise.all([addNewProduct(dataSet)])
-        //     .then(([res]) => {
-        //         console.log(res, '->>>')
-        //         fetchProductsList()
-        //         setProductInputFieldsInfo({})
-        //     })
-        //     .catch(error => console.log(error));
+    const changeStatus = (id, status) => {
+
+        const dataSet = {
+            ids: [
+                id
+            ],
+            status: status == 1 ? "2" : "1"
+        };
+
+        Promise.all([changeItemStatusbyid(dataSet)])
+            .then(([res]) => {
+                // console.log(res, '->>>')
+                fetchItemsList()
+            })
+            .catch(error => console.log(error));
     }
 
-    // console.log(editingItem,'editingItem -->');
+    const removeItemFromList = (id) => {
+
+        Promise.all([deleteItembyid({ id })])
+            .then(([res]) => {
+                // console.log(res, '->>>')
+                fetchItemsList()
+            })
+            .catch(error => console.log(error));
+    }
+
+    const onModalSubmit = () => {
+        if (isEditingItem) {
+            const dataSet = {
+                id: editingItem._id,
+                title: editingItem.title,
+                image: editingItem.image,
+                challenges: editingItem.challenges
+
+            };
+
+            Promise.all([updateItembyid(dataSet)])
+                .then(([res]) => {
+                    console.log(res, '->>> update')
+                    fetchItemsList()
+                    setIsEditingItem(false)
+                    setEditingItem({})
+                    setOpen(false)
+                })
+                .catch(error => console.log(error));
+
+        } else { //createNewItem
+
+            const dataSet = {
+                title: editingItem.title,
+                description: editingItem.description,
+                image: editingItem.image,
+                challenges: editingItem.challenges
+            };
+
+            Promise.all([addNewItem(dataSet)])
+                .then(([res]) => {
+                    console.log(res, '->>>Create Item')
+                    fetchItemsList()
+                    setEditingItem({})
+                    setOpen(false)
+                })
+                .catch(error => console.log(error));
+
+        }
+    }
+
+
     return (
         <>
-
-            {/* <AlertDialog isCourseDelete={true} open={openCourseAlertModal} setOpen={setOpenCourseAlertModal} handleCoursesItemDelete={handleCoursesItemDelete} warningDesc={'Are you sure you want to delete this Course ? '} />
-            <AlertDialog isSectionDelete={true} open={openSectionAlertModal} setOpen={setOpenSectionAlertModal} handleSectionItemDelete={handleSectionItemDelete} warningDesc={'Are you sure you want to delete this Section ? '} /> */}
 
             <div>
                 <Modal
@@ -459,7 +216,7 @@ export default function Home() {
                 >
                     <Fade in={open}>
                         <Box sx={style}>
-                            <h1 style={{ display: 'flex', justifyContent: 'center' }}>{isEditingItem ?'Edit Item' :'Create New Item'} </h1>
+                            <h1 style={{ display: 'flex', justifyContent: 'center' }}>{isEditingItem ? 'Edit Item' : 'Create New Item'} </h1>
                             <Stack direction="column" spacing={4}>
                                 <FormControl id="title" isRequired>
                                     <FormLabel>Title</FormLabel>
@@ -508,29 +265,14 @@ export default function Home() {
 
                                 <FormControl id="challenges" isRequired>
                                     <FormLabel>Challenges</FormLabel>
-                                    {/* <Input
-                                    placeholder="Enter Image URL"
-                                    _placeholder={{ color: 'gray.500' }}
-                                    type="text"
-                                    value={editingItem?.Challenges}
-                                    onChange={(e) => {
-                                        setEditingItem((pre) => {
-                                            return { ...pre, image: e.target.value };
-                                        });
-                                    }}
-                                /> */}
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        // value={age}
-                                        label="Age"
-                                        // onChange={handleChange}
-
-                                        // value={editingItem?.Challenges.length > 0 ? editingItem?.Challenges[0]?._id :editingItem?.Challenges?._id}
-                                        value={ editingItem?.Challenges?._id  }
+                                        label="Challenges"
+                                        value={typeof (editingItem?.challenges) == 'string' ? editingItem?.challenges : editingItem?.challenges?.find((el, idx) => el._id)?._id}
                                         onChange={(e) => {
                                             setEditingItem((pre) => {
-                                                return { ...pre, image: e.target.value };
+                                                return { ...pre, challenges: e.target.value };
                                             });
                                         }}
                                     >
@@ -542,7 +284,7 @@ export default function Home() {
                                     </Select>
                                 </FormControl>
 
-                                <Button variant='contained' onClick={() => ''}
+                                <Button variant='contained' onClick={() => onModalSubmit()}
                                     sx={{ width: '80%', display: 'flex', alignSelf: 'center' }}>Save</Button>
                             </Stack>
                         </Box>
@@ -552,7 +294,7 @@ export default function Home() {
 
 
             <Button variant='contained' onClick={handleOpen}
-                sx={{ position: "absolute", top: 15, right: 54, }}>Add a new User</Button>
+                sx={{ position: "absolute", top: 15, right: 54, }}>Add a new Item</Button>
 
             <Box pl={5} pt={10} sx={{
                 marginBottom: { xs: "3%", md: "5%" },
@@ -596,14 +338,14 @@ export default function Home() {
                                             <IconButton
                                                 aria-label="edit item"
                                                 size="small"
-                                            onClick={() => onEditItem(rowItem)}
+                                                onClick={() => onEditItem(rowItem)}
                                             >
                                                 {pencil}
                                             </IconButton>
                                             <IconButton
                                                 aria-label="delete item"
                                                 size="small"
-                                            // onClick={() => setOpen(!open)}
+                                                onClick={() => removeItemFromList(rowItem._id)}
                                             >
                                                 {deletebtn}
                                             </IconButton>
@@ -611,7 +353,7 @@ export default function Home() {
                                             <IconButton
                                                 aria-label="change status"
                                                 size="small"
-                                            // onClick={() => setOpen(!open)}
+                                                onClick={() => changeStatus(rowItem._id, rowItem.status)}
                                             >
                                                 <img
                                                     src={'https://cdn-icons-png.flaticon.com/128/1721/1721929.png'}

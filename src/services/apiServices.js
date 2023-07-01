@@ -11,19 +11,18 @@ export const addNewItem = async (payload) => {
         const axiosInfo = await apiAxios()
 
         const { data = [] } = await axiosInfo.post(
-            `create/product`,
+            `api/v1/card/add`,
             // {
             //     name,
             //     description,
-            //     attributes,
-            //     price,
-            //     salePrice,
-            //     stock,
             //     image
             // },
             payload,
             {
-                headers: {},
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
             }
         );
         return data;
@@ -38,10 +37,13 @@ export const updateItembyid = async (payload) => {
     try {
         const axiosInfo = await apiAxios()
         const { data = [] } = await axiosInfo.put(
-            `update/productbyid/${id}`,
+            `api/v1/card/update`,
             payload,
             {
-                headers: {},
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
             }
         );
         return data;
@@ -53,10 +55,35 @@ export const deleteItembyid = async ({ id }) => {
     try {
         const axiosInfo = await apiAxios()
         const { data = [] } = await axiosInfo.delete(
-            `delete/productbyid/${id}`,
+            `api/v1/card/delete/${id}`,
 
             {
-                headers: {},
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
+            }
+        );
+        return data;
+    } catch (error) {
+        throw Error(error.response.statusText);
+    }
+};
+
+
+export const changeItemStatusbyid = async (payload) => {
+    const { id } = payload
+
+    try {
+        const axiosInfo = await apiAxios()
+        const { data = [] } = await axiosInfo.put(
+            `api/v1/card/status-change`,
+            payload,
+            {
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
             }
         );
         return data;
@@ -71,9 +98,10 @@ export const fetchItems = async () => {
         const axiosInfo = await apiAxios()
         const { data = [] } = await axiosInfo.get(`api/v1/card/list`,
             {
-                headers: {
-                    'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjAzMTUzLCJleHAiOjE2ODg4MDc5NTN9.kZvrgQQbwfTXqmbb0eY3hu4efs-73IIpf7wXS8qYQ1A'
-                },
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
             }
         );
         return data;
@@ -87,9 +115,10 @@ export const fetchChallenges = async () => {
         const axiosInfo = await apiAxios()
         const { data = [] } = await axiosInfo.get(`api/v1/challenges/list`,
             {
-                headers: {
-                    'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjAzMTUzLCJleHAiOjE2ODg4MDc5NTN9.kZvrgQQbwfTXqmbb0eY3hu4efs-73IIpf7wXS8qYQ1A'
-                },
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFqaWppLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBamlqaSIsInJvbGVzIjp7Il9pZCI6IjY0NmI2YjEzNDMzMjNkNGM0ODBmMjZjNyIsImNvZGUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbiJ9LCJjdXJyZW50RGF5IjoiIiwiaWF0IjoxNjg4MjQxNjIyLCJleHAiOjE2ODg4NDY0MjJ9.CzBrMfQmWb4Ivgf-zYPq6GJ6s42C0Ok6sEsenoo3rc4'
+                  },
             }
         );
         return data;
